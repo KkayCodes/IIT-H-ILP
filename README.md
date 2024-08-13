@@ -15,7 +15,7 @@ python3 out.py
 **2. eval.py**
 
 This script takes in the ground truth and output files as user inputs and prints Character Error Rate(CER) and Word Error Rate(WER) using levenshtein distance to calculate
-the above.
+the above. The output is written to eval_out.md
 
 ```bash
 python3 eval.py
