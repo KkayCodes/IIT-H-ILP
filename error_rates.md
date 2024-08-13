@@ -1,3 +1,14 @@
+# Error Rates : Out of the box
+
+## Tools Used: Pytesseract, OpenCV, Pillow
+### Is text preprocessed? : Yes.
+
+
+## Hindi
+
+
+
+
 | Ground Truth File      | OCR Output File       | CER                                         | WER                                         |
 |------------------------|------------------------|---------------------------------------------|---------------------------------------------|
 | images/hin/image_gt    | images/hin/image_out   | <span style="color: red;">0.3596</span>    | <span style="color: red;">2.9709</span>    |
