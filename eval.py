@@ -34,14 +34,14 @@ def colorize_text(text, cer, wer):
     return f"{color}{text}{AnsiColors.ENDC}"
 
 def main():
-    # Define the header for the table
-    header = f"{'Ground Truth Path':<40} {'OCR Output Path':<40} {'CER':<10} {'WER':<10}\n"
-    separator = '-' * 100 + '\n'
+    # Define the header for the Markdown table
+    header = '| Ground Truth File      | OCR Output File       | CER         | WER         |\n'
+    separator = '|------------------------|------------------------|-------------|-------------|\n'
 
-    # Open the error_rate.txt file in append mode
-    with open('error_rate.txt', 'a', encoding='utf-8') as error_file:
+    # Open the Markdown file in append mode
+    with open('eval_out.md', 'a', encoding='utf-8') as error_file:
         # Write the header if the file is empty
-        if os.stat('error_rate.txt').st_size == 0:
+        if os.stat('eval_out.md').st_size == 0:
             error_file.write(header)
             error_file.write(separator)
         
@@ -77,10 +77,10 @@ def main():
                 print(colorize_text(cer_text, cer, wer))
                 print(colorize_text(wer_text, cer, wer))
 
-                # Format the output as a table row
-                row = f"{gt_file_path:<40} {ocr_file_path:<40} {cer:<10.4f} {wer:<10.4f}\n"
+                # Format the output as a Markdown table row
+                row = f"| {gt_file_path:<22} | {ocr_file_path:<22} | {cer:<11.4f} | {wer:<11.4f} |\n"
                 
-                # Write the formatted row to the error_rate.txt file
+                # Write the formatted row to the Markdown file
                 error_file.write(row)
                 error_file.flush()  # Ensure the data is written to the file immediately
 
