@@ -31,7 +31,7 @@ def extractText(imagePath):
     return text
 
 # Path to the image file
-imagePath = r'images/tam/tam1.png'
+imagePath = r'images/hin/print.jpg'
 
 # Extract text from the image
 text = extractText(imagePath)

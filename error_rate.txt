@@ -1,0 +1,6 @@
+Ground Truth Path                        OCR Output Path                          CER        WER       
+----------------------------------------------------------------------------------------------------
+images/hin/image_gt                      images/hin/image_out                     0.3596     2.9709    
+images/hin/none_gt                       images/hin/none_out                      0.1048     0.3333    
+images/hin/print_gt                      images/hin/print_out                     0.0669     0.2857    
+images/hin/simple_gt                     images/hin/simple_out                    0.1176     0.0000    

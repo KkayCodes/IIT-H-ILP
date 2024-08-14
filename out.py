@@ -38,31 +38,33 @@ def extractText(imagePath):
     pil_image = Image.fromarray(binary)
     
     # Perform OCR using Tesseract
-    text = pytesseract.image_to_string(pil_image, lang='tam')
+    text = pytesseract.image_to_string(pil_image, lang='san')
     
     return text
 
 def main():
-    # Ask user for the relative path to the image file
-    imagePath = input(f"{AnsiColors.OKBLUE}Enter the relative path to the image file:{AnsiColors.ENDC} ").strip()
-    
-    # Ask user for the output file name
-    outputFileName = input(f"{AnsiColors.OKBLUE}Enter the name of the output file (e.g., output.txt):{AnsiColors.ENDC} ").strip()
-    
-    # Extract text from the image
-    try:
-        extracted_text = extractText(imagePath)
-    except ValueError as e:
-        print(e)
-        return
-    
-    # Write the extracted text to the output file
-    try:
-        with open(outputFileName, 'w') as file:
-            file.write(extracted_text)
-        print(f"{AnsiColors.OKGREEN}Text successfully written to {outputFileName}.{AnsiColors.ENDC}")
-    except IOError as e:
-        print(f"{AnsiColors.FAIL}Error writing to file: {e}{AnsiColors.ENDC}")
+    while(True):
+        
+        # Ask user for the relative path to the image file
+        imagePath = input(f"{AnsiColors.OKBLUE}Enter the relative path to the image file:{AnsiColors.ENDC} ").strip()
+        
+        # Ask user for the output file name
+        outputFileName = input(f"{AnsiColors.OKBLUE}Enter the name of the output file (e.g., output.txt):{AnsiColors.ENDC} ").strip()
+        
+        # Extract text from the image
+        try:
+            extracted_text = extractText(imagePath)
+        except ValueError as e:
+            print(e)
+            return
+        
+        # Write the extracted text to the output file
+        try:
+            with open(outputFileName, 'w') as file:
+                file.write(extracted_text)
+            print(f"{AnsiColors.OKGREEN}Text successfully written to {outputFileName}.{AnsiColors.ENDC}")
+        except IOError as e:
+            print(f"{AnsiColors.FAIL}Error writing to file: {e}{AnsiColors.ENDC}")
 
 if __name__ == "__main__":
     main()
