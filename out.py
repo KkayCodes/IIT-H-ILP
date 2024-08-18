@@ -37,14 +37,14 @@ def extractText(imagePath):
     # Convert binary image back to PIL format
     pil_image = Image.fromarray(binary)
     
-    # Perform OCR using Tesseract
-    text = pytesseract.image_to_string(pil_image, lang='san')
+    # Perform OCR using Tesseract with -psm 6 and best model
+    custom_config = r'--psm 6'
+    text = pytesseract.image_to_string(pil_image, lang='san_best', config=custom_config)
     
     return text
 
 def main():
-    while(True):
-        
+    while True:
         # Ask user for the relative path to the image file
         imagePath = input(f"{AnsiColors.OKBLUE}Enter the relative path to the image file:{AnsiColors.ENDC} ").strip()
         
@@ -56,7 +56,7 @@ def main():
             extracted_text = extractText(imagePath)
         except ValueError as e:
             print(e)
-            return
+            continue  # Continue the loop if an error occurs
         
         # Write the extracted text to the output file
         try:

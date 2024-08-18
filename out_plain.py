@@ -1,0 +1,60 @@
+import pytesseract
+from PIL import Image
+import cv2 as cv
+import os
+
+# Define ANSI color codes for formatting
+class AnsiColors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+def extractText(imagePath):
+    # Load the image
+    image = cv.imread(imagePath)
+    
+    if image is None:
+        raise ValueError(f"{AnsiColors.FAIL}Error: Image at path {imagePath} could not be loaded.{AnsiColors.ENDC}")
+    
+    # Convert the image to RGB (PIL expects RGB images)
+    rgb_image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
+    
+    # Convert the image to PIL format
+    pil_image = Image.fromarray(rgb_image)
+    
+    # Perform OCR using Tesseract with -psm 6 and best model
+    custom_config = r'--psm 6'
+    text = pytesseract.image_to_string(pil_image, lang='san_best', config=custom_config)
+    
+    return text
+
+def main():
+    while True:
+        # Ask user for the relative path to the image file
+        imagePath = input(f"{AnsiColors.OKBLUE}Enter the relative path to the image file:{AnsiColors.ENDC} ").strip()
+        
+        # Ask user for the output file name
+        outputFileName = input(f"{AnsiColors.OKBLUE}Enter the name of the output file (e.g., output.txt):{AnsiColors.ENDC} ").strip()
+        
+        # Extract text from the image
+        try:
+            extracted_text = extractText(imagePath)
+        except ValueError as e:
+            print(e)
+            continue  # Continue the loop if an error occurs
+        
+        # Write the extracted text to the output file
+        try:
+            with open(outputFileName, 'w') as file:
+                file.write(extracted_text)
+            print(f"{AnsiColors.OKGREEN}Text successfully written to {outputFileName}.{AnsiColors.ENDC}")
+        except IOError as e:
+            print(f"{AnsiColors.FAIL}Error writing to file: {e}{AnsiColors.ENDC}")
+
+if __name__ == "__main__":
+    main()

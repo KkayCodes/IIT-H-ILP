@@ -39,9 +39,9 @@ def main():
     separator = '|------------------------|------------------------|-------------|-------------|\n'
 
     # Open the Markdown file in append mode
-    with open('eval_out.md', 'a', encoding='utf-8') as error_file:
+    with open('eval_san.md', 'a', encoding='utf-8') as error_file:
         # Write the header if the file is empty
-        if os.stat('eval_out.md').st_size == 0:
+        if os.stat('eval_san.md').st_size == 0:
             error_file.write(header)
             error_file.write(separator)
         
