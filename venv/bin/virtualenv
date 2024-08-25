@@ -1,4 +1,4 @@
-#!/home/kkay/IIT-H/OCR/IIT-H-ILP/venv/bin/python3
+#!/home/kkay/IIT-H/OCR/ILP-OCR/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

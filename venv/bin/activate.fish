@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/kkay/IIT-H/OCR/IIT-H-ILP/venv"
+set -gx VIRTUAL_ENV "/home/kkay/IIT-H/OCR/ILP-OCR/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

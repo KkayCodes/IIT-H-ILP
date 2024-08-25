@@ -14,7 +14,10 @@ class AnsiColors:
 
 def calculate_cer(gt_text, ocr_text):
     """Calculate the Character Error Rate (CER)."""
-    return lev.distance(gt_text, ocr_text) / len(gt_text) if len(gt_text) > 0 else 0
+    if len(gt_text) == 0:
+        return 0  # Avoid division by zero
+    errors = lev.distance(gt_text, ocr_text)
+    return errors / len(gt_text)
 
 def calculate_wer(gt_text, ocr_text):
     """Calculate the Word Error Rate (WER)."""
