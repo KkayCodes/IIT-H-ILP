@@ -23,6 +23,9 @@ def calculate_wer(gt_text, ocr_text):
     """Calculate the Word Error Rate (WER)."""
     gt_words = gt_text.split()
     ocr_words = ocr_text.split()
+    print(gt_words[1])
+    print(ocr_words[1])
+    print(lev.distance(gt_words[1], ocr_words[1]))
     return lev.distance(" ".join(gt_words), " ".join(ocr_words)) / len(gt_words) if len(gt_words) > 0 else 0
 
 def colorize_text(text, cer, wer):

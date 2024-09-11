@@ -39,7 +39,7 @@ def extractText(imagePath):
     
     # Perform OCR using Tesseract with -psm 6 and best model
     custom_config = r'--psm 6'
-    text = pytesseract.image_to_string(pil_image, lang='san_best', config=custom_config)
+    text = pytesseract.image_to_string(pil_image, lang='san', config=custom_config)
     
     return text
 
