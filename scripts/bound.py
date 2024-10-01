@@ -22,7 +22,7 @@ def preProcess(imagePath):
     
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     
-    _, binary = cv.threshold(gray, 0, 255, cv.THRESH_BINARY | cv.THRESH_OTSU)
+    _, binary = cv.threshold(gray, 127, 255, cv.THRESH_BINARY | cv.THRESH_OTSU)
     
     return image, binary
 
@@ -36,8 +36,8 @@ def extractText(imagePath, apply_preprocessing=True):
             raise ValueError(f"{AnsiColors.FAIL}Error: Image at path {imagePath} could not be loaded.{AnsiColors.ENDC}")
         pil_image = Image.fromarray(cv.cvtColor(original_image, cv.COLOR_BGR2RGB))
     
-    custom_config = r'--psm 3'
-    text = pytesseract.image_to_string(pil_image, lang='san_best', config=custom_config)
+    custom_config = r'--psm 6 -l san' 
+    text = pytesseract.image_to_string(pil_image, lang='san', config=custom_config)
     
     return original_image, text
 
@@ -50,7 +50,7 @@ def drawBoundingBoxes(imagePath, outputImagePath, apply_preprocessing=True):
             raise ValueError(f"{AnsiColors.FAIL}Error: Image at path {imagePath} could not be loaded.{AnsiColors.ENDC}")
     
     h, w, _ = original_image.shape
-    boxes = pytesseract.image_to_boxes(original_image)
+    boxes = pytesseract.image_to_boxes(original_image, lang='san')
     
     for box in boxes.splitlines():
         box = box.split(' ')

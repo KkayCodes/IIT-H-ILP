@@ -26,7 +26,7 @@ def preProcess(imagePath):
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     
     # Apply binary thresholding to segment out the text
-    _, binary = cv.threshold(gray, 0, 255, cv.THRESH_BINARY | cv.THRESH_OTSU)
+    _, binary = cv.threshold(gray, 127, 255, cv.THRESH_BINARY | cv.THRESH_OTSU)
     
     return binary
 
@@ -38,7 +38,7 @@ def extractText(imagePath):
     pil_image = Image.fromarray(binary)
     
     # Perform OCR using Tesseract with -psm 6 and best model
-    custom_config = r'--psm 6'
+    custom_config = r'--psm 3'
     text = pytesseract.image_to_string(pil_image, lang='san', config=custom_config)
     
     return text
