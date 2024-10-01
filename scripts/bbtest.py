@@ -14,7 +14,7 @@ for contour in contours:
     if w > 30 and h > 30:
         cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-output_path = 'sanskrit_text_bounding_boxes.png'
+output_path = 'sanskbbb.png'
 cv2.imwrite(output_path, image)
 
 print(f"Image saved with bounding boxes as {output_path}")

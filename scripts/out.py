@@ -1,70 +1,49 @@
 import pytesseract
 from PIL import Image
 import cv2 as cv
-import numpy as np
-import os
-
-# Define ANSI color codes for formatting
-class AnsiColors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
 
 def preProcess(imagePath):
-    # Load the image
     image = cv.imread(imagePath)
-    
     if image is None:
-        raise ValueError(f"{AnsiColors.FAIL}Error: Image at path {imagePath} could not be loaded.{AnsiColors.ENDC}")
+        raise ValueError(f"Error: Image at path {imagePath} could not be loaded.")
     
-    # Convert the image to grayscale
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-    
-    # Apply binary thresholding to segment out the text
     _, binary = cv.threshold(gray, 127, 255, cv.THRESH_BINARY | cv.THRESH_OTSU)
     
-    return binary
+    return binary, image
 
 def extractText(imagePath):
-    # Preprocess the image
-    binary = preProcess(imagePath)
-    
-    # Convert binary image back to PIL format
-    pil_image = Image.fromarray(binary)
-    
-    # Perform OCR using Tesseract with -psm 6 and best model
-    custom_config = r'--psm 3'
-    text = pytesseract.image_to_string(pil_image, lang='san', config=custom_config)
-    
-    return text
+    binary, original_image = preProcess(imagePath)
+    contours, _ = cv.findContours(binary, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+    extracted_text = []
 
-def main():
-    while True:
-        # Ask user for the relative path to the image file
-        imagePath = input(f"{AnsiColors.OKBLUE}Enter the relative path to the image file:{AnsiColors.ENDC} ").strip()
-        
-        # Ask user for the output file name
-        outputFileName = input(f"{AnsiColors.OKBLUE}Enter the name of the output file (e.g., output.txt):{AnsiColors.ENDC} ").strip()
-        
-        # Extract text from the image
-        try:
-            extracted_text = extractText(imagePath)
-        except ValueError as e:
-            print(e)
-            continue  # Continue the loop if an error occurs
-        
-        # Write the extracted text to the output file
-        try:
-            with open(outputFileName, 'w') as file:
-                file.write(extracted_text)
-            print(f"{AnsiColors.OKGREEN}Text successfully written to {outputFileName}.{AnsiColors.ENDC}")
-        except IOError as e:
-            print(f"{AnsiColors.FAIL}Error writing to file: {e}{AnsiColors.ENDC}")
+    for contour in contours:
+        x, y, w, h = cv.boundingRect(contour)
+        if w > 30 and h > 30:
+            roi = original_image[y:y + h, x:x + w]
+            pil_image = Image.fromarray(cv.cvtColor(roi, cv.COLOR_BGR2RGB))
+            custom_config = r'--psm 6'
+            text = pytesseract.image_to_string(pil_image, lang='san', config=custom_config)
+            extracted_text.append((text, (x, y, w, h)))
+            cv.rectangle(original_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+    cv.imwrite('output_with_bboxes.png', original_image)
+    return extracted_text
+
+def main(imagePath, outputFileName):
+    try:
+        extracted_text = extractText(imagePath)
+    except ValueError as e:
+        print(e)
+        return
+    
+    try:
+        with open(outputFileName, 'w') as file:
+            for text, bbox in extracted_text:
+                file.write(f"Text: {text.strip()} at {bbox}\n")
+        print(f"Text successfully written to {outputFileName}.")
+    except IOError as e:
+        print(f"Error writing to file: {e}")
 
 if __name__ == "__main__":
-    main()
+    main('/home/kkay/IIT-H/OCR/ILP-OCR/images/san/simple.jpg', 'output.txt')  
