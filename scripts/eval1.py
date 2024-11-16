@@ -20,10 +20,10 @@ def calculate_wer(ground_truth, output_text):
     return errors / total_words
 
 
-with open(r'images/tam/print_gt.txt', 'r', encoding='utf-8') as f:
+with open(r'/home/kkay/IIT-H/OCR/ILP-OCR/test/complex/c4_p.txt', 'r', encoding='utf-8') as f:
     gt_text = f.read().strip()
 
-with open(r'images/tam/print_out.txt', 'r', encoding='utf-8') as f:
+with open(r'/home/kkay/IIT-H/OCR/ILP-OCR/test/complex/c4_bb.txt', 'r', encoding='utf-8') as f:
     ocr_text = f.read().strip()
 
 
